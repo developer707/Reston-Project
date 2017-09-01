@@ -2,22 +2,25 @@
   var app = angular.module('SearchInventory', ['ngSanitize']);
 
   app.controller('StoreController', ['searchService','$scope','$sce', function (searchService, $scope, $sce) {
-        $scope.inventory = [];
+
+        $scope.details = [];
         $scope.entry = "";
+        $scope.inventory = [];
         $scope.invalidEntry = false;
         $scope.showDetails = false;
-        $scope.details = [];
         $scope.previous = true;
+
+
 
         $scope.showPrevious = function(){
             $scope.showDetails = false;
             $scope.previous = true;
         };
 
-      $scope.renderHTML = function(description) {
+        $scope.renderHTML = function(description) {
           var decoded = angular.element('<textarea />').html(description).text();
           return $sce.trustAsHtml(decoded);
-      };
+        };
 
         $scope.showResults = function(item){
                 $scope.details = item;
