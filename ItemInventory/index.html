@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html  ng-app="SearchInventory">
+  <head>
+    <link rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="library/angular.min.js"></script>
+    <script type="text/javascript" src="library/angular-sanitize.min.js"></script>
+      <script type="text/javascript" src="library/jquery.min.js"></script>
+    <script type="text/javascript" src="library/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="library/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style/custom.css">
+
+    <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="searchService.js"></script>
+ </head>
+
+  <body  ng-app="app" ng-controller="StoreController as store">
+    <header class="title">
+        <div class="row">
+            <div class=" col-md-4 back-button">
+                <button  ng-disabled="previous" class="btn btn-info btn-lg" type="button" ng-click="showPrevious()">BACK</button>
+            </div>
+            <div class="col-md-3">
+                <h1 style="color:white; margin-top:0px; padding: 10px;" class="text-center">Product Search</h1>
+            </div>
+        </div>
+    </header>
+        <div class="container below-label">
+          <div class="row">
+              <div class="col-md-4 col-md-offset-2 entry-label">
+          <h2>Please Enter an Item: </h2>
+            </div>
+          <div class="col-md-3">
+            <div class="input-group search-field">
+              <input type="text" class="form-control" ng-model="entry"  placeholder="Enter Item" ng-keydown="findItem($event)"/>
+              <span class="input-group-btn">
+                <button class="btn btn-info" type="button" ng-click="findItem('search')" ng-disabled="!entry">Go!</button>
+            </span>
+            </div>
+          </div>
+        </div>
+          <div class="error" ng-if="invalidEntry">
+            <h3 class="error-text"> Please refine your search</h3>
+          </div>
+        </div>
+      <!--</div>-->
+    <div class="list-group" ng-hide="showDetails">
+      <div class="list-group-item" ng-repeat="product in inventory | limitTo: 10">
+        <a class="title-link" ng-click="showResults(product)">{{product.name}} <em class="pull-right">{{product.salePrice | currency}}</em></a><br>
+        <img class="picture" ng-src="{{product.thumbnailImage}}"  ng-click="showResults(product)"/>
+
+          <div>
+            <h4>Description</h4>
+            <!--<blockquote ng-bind-html="product.shortDescription"></blockquote>-->
+            <blockquote ng-bind-html="renderHTML(product.shortDescription)"></blockquote>
+          </div>
+      </div>
+</div>
+
+  <div ng-show="showDetails">
+     <h2 class="center"> Details</h2>
+      <div class="list-group-item">
+          <img class="pull-left large-pic" ng-src="{{details.largeImage}}"/>
+    <div class="row">
+        <div class="col-md-2">
+              <div>
+                <b>Name:</b>
+                <p>{{details.name}}</p>
+              </div>
+
+              <b>Price:</b>
+              <p>{{details.salePrice | currency}}</p>
+
+              <b>Availability</b>
+              <p>{{details.stock}}</p>
+
+              <b>Model Number:</b>
+              <p>{{details.modelNumber}}</p>
+
+              <b> UPC Number:</b>
+              <p>{{details.upc}}</p>
+
+          <b>Customer Rating:</b>
+            <div>
+                <span>{{details.customerRating | number: 1 }}</span>
+                 <img ng-src="{{details.customerRatingImage }}" />
+                </div>
+            <div>
+                    <b>Number of Reviews:</b>
+                    <p>{{details.numReviews}}</p>
+            </div>
+        </div>
+             <div class="col-md-6">
+             <b>Description</b>
+                <p ng-bind-html="renderHTML(details.longDescription)"></p>
+             </div>
+
+    </div>
+
+  </div>
+  </div>
+  </body>
+</html>
